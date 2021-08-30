@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "allowJs": false, // 是否编辑js文件
+    "baseUrl": "./lib/index.ts",
+    "experimentalDecorators": true, // 启动装饰器
+    "esModuleInterop": true,
+    "removeComments": true, // 删除注释
+    "resolveJsonModule": true, // 加载json
+    "outDir": "./cjs_dist", // 输出目录
+    // "target": "esnext", // 编译目标
+    // "module": "commonjs", // 模块类型
+    "moduleResolution": "node",
+    "jsx": "preserve",
+    "sourceMap": true,
+    // "lib": ["esnext", "dom"],  // 导入库类型定义
+    // "types": ["node"], // 导入指定类型包
+    "strictFunctionTypes": false, // 处理 Debug Failure. No error for last overload signature 问题
+  },
+  // "include": ["lib"],
+  "exclude": [
+    "example",
+    "test",
+    "uml",
+    "dist",
+    "cjs_dist",
+    "node_modules"
+  ]
+}
