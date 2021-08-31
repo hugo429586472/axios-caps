@@ -4,7 +4,7 @@
 
 import { request, setConfig } from '../http'
 
-import { AxiosCapsDeclare } from '../types'
+import { AxiosCapsDeclare } from '../types/base'
 
 const NOT_FOUND_REQUEST = { code: -1, data: {}, message: '找不到该接口配置' }
 

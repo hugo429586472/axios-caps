@@ -17,7 +17,7 @@
     "strictFunctionTypes": false, // 处理 Debug Failure. No error for last overload signature 问题
     // 这块生成声明文件有问题，类型文件可能需要像element-plus那样单独通过gen-type.js去生成
     "declaration": true, // 生成定义文件
-    "declarationMap": false, // 生成定义sourceMap
+    "declarationMap": true, // 生成定义sourceMap
     "declarationDir": "./dist/types", // 定义文件输出目录
   },
   // "include": ["lib"],

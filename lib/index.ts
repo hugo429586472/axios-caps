@@ -2,7 +2,7 @@
 import { doComply } from './compiler'
 import Core from './core'
 
-import { AxiosCapsDeclare, CoreInstance } from './types'
+import { AxiosCapsDeclare, CoreInstance } from './types/base'
 
 let instance = null  // AxiosCaps的实例对象，用于各处获取对象进行请求
 
