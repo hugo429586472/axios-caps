@@ -4,3 +4,5 @@ dist
 cjs_dist
 dist-ssr
 *.local
+
+uml/render.md

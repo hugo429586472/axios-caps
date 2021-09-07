@@ -17,7 +17,8 @@
     }
   },
   "scripts": {
-    "test": "node --loader ts-node/esm example/index.ts",
+    "test": "node --experimental-specifier-resolution=node example/index.js",
+    "ts-test": "ts-node example/index.ts",
     "build": "tsc -p tsconfig.json",
     "build:cjs": "tsc -p cjs-tsconfig.json"
   },

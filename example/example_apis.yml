@@ -27,7 +27,7 @@ base:
       use: true  # 是否不允许重复请求（先判断缓存，再判断这个）
       key: $menu$_list  # 自定义请求key，不设置则会自动生成，设置后同一key请求在一段时间内都不会执行（防抖）
       duration: 500 # 不允许多少时间内的重复请求
-    repeat_request_interceptor:
+    repeat_response_interceptor:
       use: true  # 是否不允许重复请求（先判断缓存，再判断这个）
       duration: 500 # 不允许多少时间内的重复请求
   add:
@@ -40,6 +40,3 @@ base:
   show:
     path: $menu$/$id$
     type: get
-  edit:
-    path: $menu$/$id$
-    type: delete

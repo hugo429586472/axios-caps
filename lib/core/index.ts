@@ -38,38 +38,40 @@ export class Core {
       const res = request(request_body)
       return this.get_response(res)
     } catch (e) {
-      console.log(e)
+      console.log('Request Error:', e)
       return CATCH_ERROR_RESPONSE
     }
   }
 
   public get_request_body (api_options: AxiosCapsDeclare.ApiSetting, params: Record<string, unknown>, header = {}) {
+    const path = this.get_static_path(api_options.path, params)
+    if (!path) throw '未找到该接口配置'
     return {
       type: api_options.type,
-      url: api_options.host + this.get_static_path(api_options.path, params),
+      url: (api_options.host || '') + this.get_static_path(api_options.path, params),
       params: this.get_params(params),
       headers: this.get_header(header)
     }
   }
 
   // 设置header
-  public get_header (header: Record<string, any>) {
-    return Object.assign(this.defaultHeader, header)
+  public get_header (header: Record<string, any> = {}): Record<string, any> {
+    return Object.assign(this.defaultHeader || {}, header)
   }
 
   // 设置请求参数
-  public get_params (params) {
-    return Object.assign(this.defaultParams, params)
+  public get_params (params = {}): Record<string, any> {
+    return Object.assign(this.defaultParams || {}, params)
   }
 
   // 设置返回
   // code 1000以上后台正常返回 0-1000 浏览器异常情况（404等） -1000 - 0 后台异常
-  public get_response (response) {
+  public get_response (response): Record<string, any> {
     if (response) {
       if (response.code) {
         return response
       } else {
-        return { code: 404, data: response, message: '接口有误' }
+        return { code: 404, data: response, message: '接口服务有误，请求不到资源' }
       }
     } else {
       return BASE_ERROR_RESPONSE

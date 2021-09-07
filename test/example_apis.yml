@@ -40,6 +40,3 @@ base:
   show:
     path: $menu$/$id$
     type: get
-  edit:
-    path: $menu$/$id$
-    type: delete

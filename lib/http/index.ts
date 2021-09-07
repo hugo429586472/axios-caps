@@ -1,12 +1,12 @@
 import { AxiosRequestConfig } from 'axios'
 import http from './http'
 
-let baseConfig: AxiosRequestConfig = {
+let base_config: AxiosRequestConfig = {
   timeout: 3000 // 默认30s超时
 }
 
 export const request = async (options) => {
-  let request_body: AxiosRequestConfig = Object.assign(baseConfig, {
+  let request_body: AxiosRequestConfig = Object.assign(base_config, {
     method: options.type,
     url: options.url,
     canRepeat: options.canRepeat,
@@ -25,8 +25,8 @@ export const request = async (options) => {
   return res
 }
 
-export const setConfig = (config) => {
-  baseConfig = config
+export const setConfig = (config = {}) => {
+  base_config = Object.assign(base_config, config)
 }
 
 export default {
