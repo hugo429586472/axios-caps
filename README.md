@@ -64,8 +64,8 @@ const config = {
   timeout: 3000, // 全局通用超时时间
 }
 
-// 可以通过传入api_path与api_path_type定义接口配置
-new AxiosCaps(config, { api_path: '../example/example_apis.yml', api_path_type: 'yml'})
+// 可以通过传入path与type定义接口配置
+new AxiosCaps(config, { path: '../example/example_apis.yml', type: 'yml'})
 
 ```
 
