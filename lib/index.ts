@@ -7,20 +7,16 @@ import { AxiosCapsDeclare, CoreInstance } from './types/base'
 let instance = null  // AxiosCaps的实例对象，用于各处获取对象进行请求
 
 export class AxiosCaps {
-  api_path: string // 配置来源
-  api_path_type: string // 配置来源格式，默认为yml
   config: AxiosCapsDeclare.GlobalSetting
   core: CoreInstance
   apis: Record<string, unknown>
 
-  public constructor (config, options: { api_path: string, api_path_type: string }) {
-    this.api_path = options.api_path
-    this.api_path_type = options.api_path_type
+  public constructor (config, options: AxiosCapsDeclare.ComplierOPtions) {
 
     this.config = config
 
     this.core = new Core(this.config)
-    this.apis = doComply({ path: this.api_path, type: this.api_path_type })
+    this.apis = doComply(options)
     instance = this
   }
   

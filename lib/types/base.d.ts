@@ -36,6 +36,12 @@ interface Cache {
 
 // 全局参数
 declare namespace AxiosCapsDeclare {
+
+  export interface ComplierOPtions {
+    path?: string
+    type: string
+    config?: any
+  }
   export interface GlobalSetting {
     host: Host
     domain: string // 缓存、cookie等挂靠的域名
