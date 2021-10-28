@@ -1,0 +1,29 @@
+# 忽略目录
+example/
+public/
+test/
+docs/
+uml/
+node_modules/
+config/
+cjs_dist/
+.gitlab/
+
+# 忽略指定文件
+vue.config.js
+babel.config.js
+serve.js
+*.map
+*.local
+.DS_Store
+.env.example
+.env.serve
+.eslintrc.js
+.eslintignore
+dist.zip
+package-lock.json
+
+yarn.lock
+yarn-error.log
+.gitlab-ci.yml
+.node-version

@@ -70,6 +70,10 @@ declare namespace AxiosCapsDeclare {
     created_at: string
     message: string // 返回信息
   }
+
+  export interface CommonParams {
+    string: unknown
+  }
 }
 
 export interface CoreInstance {
