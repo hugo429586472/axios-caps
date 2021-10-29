@@ -2,19 +2,19 @@
   "compilerOptions": {
     "allowJs": false, // 是否编辑js文件
     "baseUrl": "./lib/index.ts",
-    "experimentalDecorators": true, // 启动装饰器
+    // "experimentalDecorators": true, // 启动装饰器
     "esModuleInterop": true,
     "removeComments": true, // 删除注释
     "resolveJsonModule": true, // 加载json
     "outDir": "./dist", // 输出目录
-    "target": "esnext", // 编译目标
-    "module": "esnext", // 模块类型
+    "target": "es2015", // 编译目标
+    "module": "es2015", // 模块类型
     "moduleResolution": "node",
     "jsx": "preserve",
     "sourceMap": true,
-    "lib": ["esnext", "dom"],  // 导入库类型定义
+    "lib": ["es2015", "dom"],  // 导入库类型定义
     "types": ["node"], // 导入指定类型包
-    "strictFunctionTypes": false, // 处理 Debug Failure. No error for last overload signature 问题
+    // "strictFunctionTypes": false, // 处理 Debug Failure. No error for last overload signature 问题
     // 这块生成声明文件有问题，类型文件可能需要像element-plus那样单独通过gen-type.js去生成
     "declaration": true, // 生成定义文件
     "declarationMap": true, // 生成定义sourceMap

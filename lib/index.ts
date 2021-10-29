@@ -11,7 +11,7 @@ export class AxiosCaps {
   core: CoreInstance
   apis: Record<string, unknown>
 
-  public constructor (config, options: AxiosCapsDeclare.ComplierOPtions) {
+  public constructor (config: AxiosCapsDeclare.GlobalSetting, options: AxiosCapsDeclare.ComplierOPtions) {
 
     this.config = config
 
