@@ -21,11 +21,11 @@ export class AxiosCaps {
   }
   
   // 请求接口获取数据
-  public fetch (key: string, params: AxiosCapsDeclare.CommonParams, header = {}): AxiosCapsDeclare.Response | false {
+  public async fetch (key: string, params: AxiosCapsDeclare.CommonParams, header = {}) {
     const api_config = this.get_api(key)
     if (api_config) {
       api_config.host = this.get_host(api_config.host)
-      return this.core.do(api_config, params, header)
+      return await this.core.do(api_config, params, header)
     } else {
       return this.core.return_not_found_request()
     }

@@ -4,7 +4,7 @@
  */
 export default {
   host: {
-    main: 'localhost: 3030/',
+    main: 'http://localhost: 3030/api/',
     external: 'https://api.google.com/'
   },
   domain: '', // 缓存、cookie等挂靠的域名

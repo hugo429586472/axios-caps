@@ -20,7 +20,7 @@ base:
     cache:
       use: true # 是否使用cache缓存
       key: $menu$_list  # 自定义缓存键，可以通过同名缓存键获取数据
-      timeout: 3000 # 缓存时间
+      timeout: 3000 # 缓存时间（单位：秒）
     header:
       Content-Type: application/json
     repeat_request_interceptor:

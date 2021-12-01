@@ -4,7 +4,9 @@
 
 import { request, setConfig } from '../http'
 
-import { AxiosCapsDeclare } from '../types/base'
+import { Cache } from './cache'
+
+import { AxiosCapsDeclare, Params } from '../types/base'
 
 const NOT_FOUND_REQUEST = { code: -1, data: {}, message: '找不到该接口配置' }
 
@@ -20,6 +22,7 @@ export class Core {
   defaultParams: AxiosCapsDeclare.GlobalSetting['defaultParams'] // 全局默认params
   timeout: AxiosCapsDeclare.GlobalSetting['timeout'] // 全局通用超时时间
   requestConfig: AxiosCapsDeclare.GlobalSetting['requestConfig'] // 请求配置
+  cache: Cache
 
   public constructor (config: AxiosCapsDeclare.GlobalSetting) {
     this.host = config.host
@@ -28,27 +31,42 @@ export class Core {
     this.defaultParams = config.defaultParams
     this.timeout = config.timeout
     this.requestConfig = config.requestConfig
+    this.cache = new Cache()
 
     this.set_config(this.requestConfig)
   }
   
-  public do (api_options: AxiosCapsDeclare.ApiSetting, params: Record<string, unknown>, header = {}) {
+  /*
+    执行请求
+  */
+  public async do (apiOptions: AxiosCapsDeclare.ApiSetting, params: Params, header = {}) {
     try {
-      const request_body = this.get_request_body(api_options, params, header)
-      const res = request(request_body)
-      return this.get_response(res)
+      const cacheOptions = this.cahce_key(apiOptions, params)
+      if (cacheOptions) {
+        // 取缓存
+        const cacheValue = this.cache.get_cache(cacheOptions.key)
+        if (cacheValue) return cacheValue
+
+        const responseRes = await this.do_request(apiOptions, params, header)
+        // 设置缓存
+        this.cache.create_cache(cacheOptions.key, responseRes, cacheOptions.timeout)
+        return responseRes
+      } else {
+        const responseRes = await this.do_request(apiOptions, params, header)
+        return responseRes
+      }
     } catch (e) {
-      console.log('Request Error:', e)
-      return CATCH_ERROR_RESPONSE
+      // console.log('Request Error:', e)
+      return Object.assign(CATCH_ERROR_RESPONSE, { data: e })
     }
   }
 
-  public get_request_body (api_options: AxiosCapsDeclare.ApiSetting, params: Record<string, unknown>, header = {}) {
-    const path = this.get_static_path(api_options.path, params)
+  public get_request_body (apiOptions: AxiosCapsDeclare.ApiSetting, params: Params, header = {}) {
+    const path = this.get_static_path(apiOptions.path, params)
     if (!path) throw '未找到该接口配置'
     return {
-      type: api_options.type,
-      url: (api_options.host || '') + this.get_static_path(api_options.path, params),
+      type: apiOptions.type,
+      url: (apiOptions.host || '') + this.get_static_path(apiOptions.path, params),
       params: this.get_params(params),
       headers: this.get_header(header)
     }
@@ -60,13 +78,13 @@ export class Core {
   }
 
   // 设置请求参数
-  public get_params (params = {}): Record<string, any> {
+  public get_params (params: Params = {}): Record<string, any> {
     return Object.assign(this.defaultParams || {}, params)
   }
 
   // 设置返回
   // code 1000以上后台正常返回 0-1000 浏览器异常情况（404等） -1000 - 0 后台异常
-  public get_response (response): Record<string, any> {
+  public get_response (response): AxiosCapsDeclare.Response {
     if (response) {
       if (response.code) {
         return response
@@ -99,8 +117,27 @@ export class Core {
   }
 
   // 没有接口配置时，返回 获取不到接口配置
-  public return_not_found_request () {
+  public return_not_found_request (): AxiosCapsDeclare.Response {
     return NOT_FOUND_REQUEST
+  }
+
+  protected async do_request (apiOptions: AxiosCapsDeclare.ApiSetting, params: Params, header = {}) {
+    const request_body = this.get_request_body(apiOptions, params, header)
+    const res = await request(request_body)
+    const responseRes = this.get_response(res)
+    return responseRes
+  }
+
+  protected cahce_key (apiOptions: AxiosCapsDeclare.ApiSetting, params: Params) {
+    if (apiOptions?.cache?.use) {
+      const cacheKey = apiOptions.cache.key || apiOptions.path
+      return {
+        key: this.get_static_path(cacheKey, params),
+        timeout: apiOptions.cache?.timeout
+      }
+    } else {
+      return undefined
+    }
   }
   
 }

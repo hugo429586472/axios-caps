@@ -20,6 +20,10 @@
 
 - 支持上传文件和自定义文件参数 与 文件返回处理
 
+- 国际化（待开发）
+
+- 文件格式处理（待开发）
+
 ## 安装
 
 npm安装
@@ -64,8 +68,11 @@ const config = {
   timeout: 3000, // 全局通用超时时间
 }
 
-// 可以通过传入path与type定义接口配置
+// yml文件传入api配置 可以通过传入path与type定义接口配置
 new AxiosCaps(config, { path: '../example/example_apis.yml', type: 'yml'})
+
+// 通过对象传入api配置
+new AxiosCaps(config, { type: 'object', config: { user: { login: {path: 'user/login', type: 'post'} } } })
 
 ```
 

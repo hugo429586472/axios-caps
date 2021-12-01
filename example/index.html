@@ -3,14 +3,55 @@
   <head>
     <title>axios - get example</title>
     <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
-  </head>
-  <body class="container">
-    <h1>axios-caps use</h1>
-    <ul id="people" class="list-unstyled"></ul>
 
     <script src="../cjs_dist/index.js"></script>
     <script>
-      console.log(AxiosCaps, 'AxiosCaps')
+      var config = {
+        host: {
+          main: 'http://localhost: 3030/api/',
+          external: 'https://api.google.com/'
+        },
+        domain: '', // 缓存、cookie等挂靠的域名
+        header: {
+          version: '0.0.1',
+          'Content-Type': 'application/json'
+        }, // 全局header(一些特殊header，比如需要读localstorage中某个参数传后端，需要自己二次封装)
+        params: {}, // 全局默认params
+        timeout: 3000, // 全局通用超时时间
+      }
+      var apiConfig = {
+        user: {
+          login: { path: 'user/login', type: 'post' },
+          list: { path: 'user/list', type: 'get' },
+          detail: { path: 'user/show/$id$', type: 'get' }
+        },
+        base: {
+          list: {
+            host: 'main',
+            path: '$menu$/list',
+            type: 'get',
+            cookie: [Object],
+            cache: [Object],
+            header: [Object],
+            repeat_request_interceptor: [Object],
+            repeat_response_interceptor: [Object]
+          },
+          add: { host: 'external', path: '$menu$/add', type: 'post' },
+          edit: { path: '$menu$/$id$/edit', type: 'post' },
+          show: { path: '$menu$/$id$', type: 'get' }
+        }
+      }
+      var api_options = { type: 'object', config: apiConfig }
+      var fetch2 = new AxiosCaps(config, api_options)
+      console.log(fetch2, '===')
+      var res2 = fetch2.fetch('base.list', {})
+      var res3 = fetch2.fetch('none.none', {})
+      var res4 = fetch2.fetch('user.login', {})
+
+      console.log(res2, res3, res4)
     </script>
+  </head>
+  <body class="container">
+    <h1>axios-caps use</h1>
   </body>
 </html>

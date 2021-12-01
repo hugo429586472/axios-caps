@@ -66,8 +66,8 @@ declare namespace AxiosCapsDeclare {
   // 返回数据格式
   export interface Response {
     code: number // 1000以上后台正常返回 0-1000 浏览器异常情况（404等） 0以下后台异常
-    data: any // 返回数据
-    created_at: string
+    data?: any // 返回数据
+    created_at?: string
     message: string // 返回信息
   }
 
