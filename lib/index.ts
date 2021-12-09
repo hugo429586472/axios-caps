@@ -1,6 +1,7 @@
 
 import { doComply } from './compiler'
 import Core from './core'
+import { deep_copy } from './utils/object'
 
 import { AxiosCapsDeclare, CoreInstance } from './types/base'
 
@@ -40,7 +41,7 @@ export class AxiosCaps {
   public get_api (key: string): AxiosCapsDeclare.ApiSetting | false {
     if (!key) return false
     const keys = key.split('.')
-    let res: any = this.apis
+    let res: any = deep_copy(this.apis)
     for (const item of keys) {
       if (res) {
         res = res[item]
@@ -53,8 +54,7 @@ export class AxiosCaps {
 
   // 处理域名
   public get_host (key: string) {
-    if (!key || key === '') key = 'main'
-    return this.config.host[key]
+    return this.config.host[(!key || key === '') ? 'main' : key]
   }
 }
 

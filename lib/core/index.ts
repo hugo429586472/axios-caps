@@ -86,8 +86,9 @@ export class Core {
   // code 1000以上后台正常返回 0-1000 浏览器异常情况（404等） -1000 - 0 后台异常
   public get_response (response): AxiosCapsDeclare.Response {
     if (response) {
-      if (response.code) {
-        return response
+      // 判断后台正常返回
+      if (response.status < 400) {
+        return response.data
       } else {
         return { code: 404, data: response, message: '接口服务有误，请求不到资源' }
       }
