@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    window._each_def = Array.prototype.each
+    window._find_def = Array.prototype.find
+    window._map_def = Array.prototype.map
+  </script>
+  <script type="text/javascript" src="http://in.rccchina.com/javascripts/vue.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://unpkg.com/view-design/dist/styles/iview.css">
+  <script type="text/javascript" src="http://unpkg.com/view-design/dist/iview.min.js"></script>
+  <script src="//phone-cloud.dev1.rccchina.com/phone-bar/phone-bar-js.umd.min.js?_=20220322"></script>
+  <link href="//phone-cloud.rccchina.com/assets/styles/iview-phone-bar.css?_=20191014" rel="Stylesheet" type="text/css">
+  <script src="http://message-bar.dev1.rccchina.com/loader/message-bar.umd.js"></script>
+  <script src="http://in.dev1.rccchina.com/javascripts/prototype.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/prototype/1.7.3/prototype.min.js" type="text/javascript"></script> -->
+  <script src="http://in.dev1.rccchina.com/javascripts/jquery/jquery-1.5.2.min.js?1590735887" type="text/javascript"></script>
+</head>
+<body>
+  <div id="phone-bar-app-jrthlx" style="display: inline-block;">
+    <phone-bar :employee-id="1" mode="full" :show-phone-guide="true"></phone-bar>
+  </div>
+
+  <!-- import elsass stylesheet -->
+  <link rel="stylesheet" href="//rcc-plugin.rccchina.com/elsass.css">
+  <!-- import elsass -->
+  <script src="//rcc-plugin.rccchina.com/elsass.umd.min.js"></script>
+
+
+  <div id='rmsgbar'>
+    <!-- 自定义角标入口，自己修改（如果使用默认的就不需要） -->
+    <button v-on:click="open_message">
+      自定义入口{{total}}
+    </button>
+    <!-- 消息条主体 -->
+    <message-bar :badge-config="badgeConfig" v-model="show" :use-badge="false" :employee-id="emp_id" :unreae-total-callback="unreadTotalCallback" :add-message="addMessage">
+    </message-bar>
+  </div>
+  <div id="rfeedback">
+    <button class="ivu-btn0" @click="show">
+      <svg aria-hidden="true" class="svg-icon">
+        <use xlink:href="#icon-pen">
+          <svg id="icon-pen" viewBox="0 0 1024 1024"><path d="M869.96546937 295.70666503l-71.84028627 69.05937195-138.73672485-129.00352477 74.00321961-71.06781006c37.69683838-36.15188599 98.87695313-36.15188599 136.57379149 0C907.66230774 200.84658813 907.66230774 259.55477906 869.96546937 295.70666503zM755.94798279 405.24378967L313.93710326 829.48771667 125.76190185 879.85316467l51.60140992-181.37741089 440.31143188-422.69897461L755.94798279 405.24378967z"></path></svg>
+        </use></svg>
+      员工反馈</button>
+    <r-feedback v-model="visible" :feedbackdata="feedbackdata"></r-feedback>
+  </div>
+
+  <script>
+    // setTimeout(() => {
+    //  覆盖prototype的部分方法，否则反馈组件会不能用
+    Array.prototype.map = function (iterator, context) {
+        iterator = iterator ? iterator.bind(context) : Prototype.K;
+        var results = [];
+        res = Array.from(this);
+        res.each(function(value, index) {
+            results.push(iterator(value, index));
+        });
+        return results;
+    }
+    Array.prototype.find = function(iterator, context) {
+        iterator = iterator.bind(context);
+        var result;
+        res = Array.from(this);
+        res.each(function(value, index) {
+            if (iterator(value, index)) {
+                result = value;
+                throw $break;
+            }
+        });
+        return result;
+    }
+    NodeList.prototype.each = NodeList.prototype.forEach
+    // TouchList.prototype.each = Array.prototype.each
+    // TouchList.prototype._each = Array.prototype._each
+    // Object.prototype.detect = function(iterator, context) {
+    //     iterator = iterator.bind(context);
+    //     var result;
+    //     res = Array.from(this);
+    //     res.each(function(value, index) {
+    //         if (iterator(value, index)) {
+    //             result = value;
+    //             throw $break;
+    //         }
+    //     });
+    //     return result;
+    // }
+    // Object.prototype.collect = Array.prototype.collect
+    // Array.prototype.each = window._each_def
+    // Array.prototype.map = window._map_def
+    // Array.prototype.find = window._find_def
+
+    new Vue({
+        el: '#rfeedback',
+        data: {
+            visible: false,
+            feedbackdata: JSON.stringify({
+                user_id: 1,
+                user_type: 1,
+                visit_id: 1
+            })
+        },
+        methods: {
+            show: function () {
+                this.visible = true;
+            }
+        }
+    })
+      
+    // }, 1000)
+  </script>
+
+  <script>
+    if(window.Prototype) {
+      delete Object.prototype.toJSON;
+      delete Array.prototype.toJSON;
+      delete Hash.prototype.toJSON;
+      delete String.prototype.toJSON;
+    }
+    var rmsgbar = new Vue({
+      el: '#rmsgbar',
+      data: {
+        show: false, // 消息条的显示与隐藏
+        total: 0,
+        emp_id: 1,
+        badgeConfig: {
+          badgeContent: `未读消息`,
+          // icon: 'ios-notifications-outline', // icon 有传的话，badgeContent不显示。
+          iconSize: 26, // 可以控制图标大小
+          overflowCount: 5  // 最大数字
+        }
+      },
+      methods: {
+        open_message () {
+          console.log(this.show, 123)
+          this.show = true
+          console.log(this.show, 456)
+        },
+        // 获取总数
+        unreadTotalCallback (total) {
+          this.total = total
+        },
+        // faye的订阅消息的回调
+        addMessage (total) {
+          console.log(`我是${total}`)
+          this.total = total
+        }
+      }
+    })
+  </script>
+  <!-- <script>
+    new Vue({
+      el: '#phone-bar-app-jrthlx'
+    })
+  </script> -->
+  <!-- <script src="//rcc-plugin.rccchina.com/elsass.umd.min.js"></script> -->
+</body>
+</html>

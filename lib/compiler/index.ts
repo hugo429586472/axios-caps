@@ -8,7 +8,12 @@ import path from 'path'
 
 const __dirname = path.resolve(path.dirname(''))
 
-/* 进行解析 */
+/**
+ * 进行解析
+ *
+ * @param {{ path?: string, type: string, config?: any }} options
+ * @returns {Record<string, unknown>}
+ */
 export const doComply = (options: { path?: string, type: string, config?: any }): Record<string, unknown> => {
   if (options.type === 'yml') {
     // 只能用于nodejs环境

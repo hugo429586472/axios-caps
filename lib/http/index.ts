@@ -5,6 +5,12 @@ let base_config: AxiosRequestConfig = {
   timeout: 3000 // 默认30s超时
 }
 
+/**
+ * http请求
+ *
+ * @param {*} options
+ * @returns
+ */
 export const request = async (options) => {
   let request_body: AxiosRequestConfig = Object.assign(base_config, {
     method: options.type,
@@ -27,6 +33,11 @@ export const request = async (options) => {
   return res
 }
 
+/**
+ * 设置请求配置
+ *
+ * @param {*} [config={}]
+ */
 export const setConfig = (config = {}) => {
   base_config = Object.assign(base_config, config)
 }

@@ -24,6 +24,11 @@ export class Core {
   requestConfig: AxiosCapsDeclare.GlobalSetting['requestConfig'] // 请求配置
   cache: Cache
 
+  /**
+   * Creates an instance of Core.
+   * @param {AxiosCapsDeclare.GlobalSetting} config
+   * @memberof Core
+   */
   public constructor (config: AxiosCapsDeclare.GlobalSetting) {
     this.host = config.host
     this.domain = config.domain
@@ -35,10 +40,16 @@ export class Core {
 
     this.set_config(this.requestConfig)
   }
-  
-  /*
-    执行请求
-  */
+
+  /**
+   * 执行请求
+   *
+   * @param {AxiosCapsDeclare.ApiSetting} apiOptions
+   * @param {Params} params
+   * @param {*} [header={}]
+   * @returns
+   * @memberof Core
+   */
   public async do (apiOptions: AxiosCapsDeclare.ApiSetting, params: Params, header = {}) {
     try {
       const cacheOptions = this.cahce_key(apiOptions, params)
@@ -61,7 +72,16 @@ export class Core {
     }
   }
 
-  public get_request_body (apiOptions: AxiosCapsDeclare.ApiSetting, params: Params, header = {}) {
+  /**
+   * 获取请求body
+   *
+   * @param {AxiosCapsDeclare.ApiSetting} apiOptions
+   * @param {Params} params
+   * @param {{}} header
+   * @returns
+   * @memberof Core
+   */
+  public get_request_body (apiOptions: AxiosCapsDeclare.ApiSetting, params: Params, header: {}) {
     const path = this.get_static_path(apiOptions.path, params)
     if (!path) throw '未找到该接口配置'
     return {
@@ -72,18 +92,36 @@ export class Core {
     }
   }
 
-  // 设置header
+  /**
+   * 设置header
+   *
+   * @param {Record<string, any>} [header={}]
+   * @returns {Record<string, any>}
+   * @memberof Core
+   */
   public get_header (header: Record<string, any> = {}): Record<string, any> {
     return Object.assign(this.defaultHeader || {}, header)
   }
 
-  // 设置请求参数
+  /**
+   * 设置请求参数
+   *
+   * @param {Params} [params={}]
+   * @returns {Record<string, any>}
+   * @memberof Core
+   */
   public get_params (params: Params = {}): Record<string, any> {
     return Object.assign(this.defaultParams || {}, params)
   }
 
-  // 设置返回
-  // code 1000以上后台正常返回 0-1000 浏览器异常情况（404等） -1000 - 0 后台异常
+  /**
+   * 设置返回
+   * code 1000以上后台正常返回 0-1000 浏览器异常情况（404等） -1000 - 0 后台异常
+   *
+   * @param {*} response
+   * @returns {AxiosCapsDeclare.Response}
+   * @memberof Core
+   */
   public get_response (response): AxiosCapsDeclare.Response {
     if (response) {
       // 判断后台正常返回
@@ -97,12 +135,24 @@ export class Core {
     }
   }
 
-  // 设置默认配置
+  /**
+   * 设置默认配置
+   *
+   * @param {*} config
+   * @memberof Core
+   */
   public set_config (config) {
     setConfig(config)
   }
 
-  // 处理动态链接，参数转化
+  /**
+   * 处理动态链接，参数转化
+   *
+   * @param {string} url
+   * @param {Record<string, any>} params
+   * @returns {string}
+   * @memberof Core
+   */
   public get_static_path (url: string, params: Record<string, any>): string {
     const match_name = url ? url.match(/\$.*?\$/g) : undefined
     let res
@@ -117,11 +167,26 @@ export class Core {
     }
   }
 
-  // 没有接口配置时，返回 获取不到接口配置
+  /**
+   * 没有接口配置时，返回 获取不到接口配置
+   *
+   * @returns {AxiosCapsDeclare.Response}
+   * @memberof Core
+   */
   public return_not_found_request (): AxiosCapsDeclare.Response {
     return NOT_FOUND_REQUEST
   }
 
+  /**
+   * 执行请求
+   *
+   * @protected
+   * @param {AxiosCapsDeclare.ApiSetting} apiOptions
+   * @param {Params} params
+   * @param {*} [header={}]
+   * @returns
+   * @memberof Core
+   */
   protected async do_request (apiOptions: AxiosCapsDeclare.ApiSetting, params: Params, header = {}) {
     const request_body = this.get_request_body(apiOptions, params, header)
     const res = await request(request_body)
@@ -129,6 +194,15 @@ export class Core {
     return responseRes
   }
 
+  /**
+   * 获取缓存key
+   *
+   * @protected
+   * @param {AxiosCapsDeclare.ApiSetting} apiOptions
+   * @param {Params} params
+   * @returns
+   * @memberof Core
+   */
   protected cahce_key (apiOptions: AxiosCapsDeclare.ApiSetting, params: Params) {
     if (apiOptions?.cache?.use) {
       const cacheKey = apiOptions.cache.key || apiOptions.path
