@@ -12,19 +12,29 @@ declare interface StorageValue<T> {
 class LocalStorage {
   age: number
 
-  // 过期时间，默认30分钟
+  /**
+   * Creates an instance of LocalStorage.
+   *  过期时间，默认30分钟
+   * 
+   * @param {number} [_age=30 * 60 * 1000]
+   * @memberof LocalStorage
+   */
   constructor (_age = 30 * 60 * 1000) {
     this.age = _age
   }
+
   /**
    * 设置过期时间
+   * 
    * @param age
    */
   public set_age (age: number): void {
     this.age = age
   }
+
   /**
    * 设置 localStorage
+   * 
    * @param key
    * @param value
    */
@@ -50,8 +60,10 @@ class LocalStorage {
     _v._isObject = isObject
     localStorage.setItem(key, JSON.stringify(_v))
   }
+
   /**
    * 判断一个 localStorage 是否过期
+   * 
    * @param key
    * @returns {boolean}
    */
@@ -69,8 +81,10 @@ class LocalStorage {
     }
     return isExpire
   }
+
   /**
    * 获取某个 localStorage 值
+   * 
    * @param key
    * @returns {*}
    */
@@ -92,6 +106,7 @@ class LocalStorage {
 
   /**
    * 删除某个 localStorage 值
+   * 
    * @param key
    */
   public remove (key: string): void {

@@ -1,6 +1,6 @@
 {
   "name": "axios-caps",
-  "version": "0.0.2-beta.6",
+  "version": "0.0.3",
   "license": "MIT",
   "description": "基于axios进行二次封装 接口库",
   "keywords": [
@@ -17,7 +17,11 @@
       "require": "./dist/index.js"
     }
   },
-  "files": ["dist", "README.md"],
+  "files": [
+    "dist",
+    "lib",
+    "README.md"
+  ],
   "scripts": {
     "test": "node --experimental-specifier-resolution=node example/index.js",
     "ts-test": "ts-node example/index.ts",
@@ -26,6 +30,7 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
+    "path-browserify": "^1.0.1",
     "qs": "^6.10.1",
     "yaml": "^1.10.2"
   },

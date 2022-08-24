@@ -44,6 +44,38 @@ yarn add axios-caps
 
 js直接引入暂不支持
 
+注：如果是vite项目中引入，需要处理path包和process对象，以及将path包引入改为path-browserify
+
+```console
+
+npm install path-browserify --save-dev
+
+```
+
+```js
+// vite.config.js中
+import { defineConfig, loadEnv } from 'vite'
+
+export defineConfig({ mode }) => {
+  return {
+    define: {
+      'process.env': { ...process.env, ...loadEnv(mode, root) },
+      'process.argv': process.argv,
+    },
+    resolve: {
+      alias: [
+        ...
+        {
+          find: 'path',
+          replacement: 'path-browserify'
+        }
+      ],
+    },
+    ...
+  }
+}
+```
+
 ## 示例
 
 ### 注册实例
@@ -69,6 +101,7 @@ const config = {
 }
 
 // yml文件传入api配置 可以通过传入path与type定义接口配置
+// 注：该方式在vite项目中引入需要通过preload或者其他方式进行处理
 new AxiosCaps(config, { path: '../example/example_apis.yml', type: 'yml'})
 
 // 通过对象传入api配置
@@ -151,5 +184,3 @@ user:
 包含TypeScript定义，可以通过```import { AxiosCapsDeclare } from 'axios-caps'```引入类型定义
 
 ## MIT
-
-
