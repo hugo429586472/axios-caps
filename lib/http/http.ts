@@ -125,7 +125,6 @@ axios.interceptors.response.use(data => {
   }
   return data
 }, error => {
-  // console.log('res error...', error)
   return Promise.reject(error)
 })
 

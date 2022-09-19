@@ -67,8 +67,10 @@ export class Core {
         return responseRes
       }
     } catch (e) {
-      // console.log('Request Error:', e)
-      return Object.assign(CATCH_ERROR_RESPONSE, { data: e })
+      return {
+        ...CATCH_ERROR_RESPONSE,
+        data: e
+      }
     }
   }
 
@@ -100,7 +102,11 @@ export class Core {
    * @memberof Core
    */
   public get_header (header: Record<string, any> = {}): Record<string, any> {
-    return Object.assign(this.defaultHeader || {}, header)
+    const deaultHeader = this.defaultHeader || {}
+    return {
+      ...deaultHeader,
+      ...header
+    }
   }
 
   /**
@@ -111,7 +117,11 @@ export class Core {
    * @memberof Core
    */
   public get_params (params: Params = {}): Record<string, any> {
-    return Object.assign(this.defaultParams || {}, params)
+    const defaultParams = this.defaultParams || {}
+    return {
+      ...defaultParams,
+      ...params
+    }
   }
 
   /**
