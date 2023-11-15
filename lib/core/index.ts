@@ -90,7 +90,8 @@ export class Core {
       type: apiOptions.type,
       url: (apiOptions.host || '') + this.get_static_path(apiOptions.path, params),
       params: this.get_params(params),
-      headers: this.get_header(header)
+      headers: this.get_header(header),
+      repeat_request_interceptor: apiOptions.repeat_request_interceptor
     }
   }
 

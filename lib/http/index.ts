@@ -16,7 +16,6 @@ export const request = async (options) => {
     ...base_config,
     method: options.type,
     url: options.url,
-    canRepeat: options.canRepeat,
     headers: options.headers,
     responseType: options.responseType,
     timeout: options.timeout
@@ -28,6 +27,9 @@ export const request = async (options) => {
   } else {
     request_body.params = params
   }
+
+  // 接口拦截器
+  http.setPendingInterceptors(options.repeat_request_interceptor)
 
   // TODO 处理 文件流 返回
   // TODO 缓存处理

@@ -4,6 +4,8 @@
 // import config from '../config/index'
 import axios from 'axios'
 import qs from 'qs'
+import type { RepeatInterceptor } from '../types/base'
+
 // const CancelToken = axios.CancelToken // 取消请求
 const clearRequest = {
   source: {
@@ -17,6 +19,9 @@ axios.defaults.timeout = 30000
 const repeatSetTime = 500
 // 重复返回判定时间
 const repeatResponseTime = 500
+
+let pendingInterceptors = null
+
 // axios.defaults.baseURL = config.host
 // http请求拦截器
 axios.interceptors.request.use((config: any) => {
@@ -24,13 +29,7 @@ axios.interceptors.request.use((config: any) => {
     config.headers['Content-Type'] = 'multipart/form-data'
     // axios.defaults.withCredentials = true
   }
-  // formdata类型数据不走格式化的流程
-  // if (!(config.data && config.data.get)) config.data = qs.stringify(config.data)
   config.cancelToken = clearRequest.source.token
-  // if (config.data && !config.data.unChecked) {
-  //   let requestMes = getRequestIdentify(config)
-  //   removePending(requestMes, !config.canRepeat)
-  // }
   config.paramsSerializer = function (params: any) {
     return qs.stringify(params, {arrayFormat: 'brackets'})
   }
@@ -38,6 +37,22 @@ axios.interceptors.request.use((config: any) => {
 }, error => {
   return Promise.reject(error)
 })
+
+// 重复请求拦截器处理
+const setPendingInterceptors = (repeatRequestInterceptor: RepeatInterceptor) => {
+  axios.interceptors.request.eject(pendingInterceptors)
+  if (!repeatRequestInterceptor) return
+
+  pendingInterceptors = axios.interceptors.request.use((config: any) => {
+    if (repeatRequestInterceptor.use) {
+      let requestMes = repeatRequestInterceptor.key || getRequestIdentify(config)
+      removePending(requestMes, true)
+    }
+    return config
+  }, error => {
+    return Promise.reject(error)
+  })
+}
 
 // 处理重复请求
 let pending = {}
@@ -110,6 +125,7 @@ const removeResponsePending = (key, isRequest = false) => {
  * 给每个返回加上标识
  */
 const getResponseIdentify = (data, isReuest = false) => {
+  // TODO: 这里重复判断应该要换个方式
   if (data.data && data.status === 200 && data.data.code < 10000) {
     return data.data.code
   } else {
@@ -119,13 +135,14 @@ const getResponseIdentify = (data, isReuest = false) => {
 
 // http响应拦截器
 axios.interceptors.response.use(data => {
-  let requestMes = getResponseIdentify(data)
-  if (requestMes) {
-    removeResponsePending(requestMes, true)
-  }
+  // 这块拦截逻辑处理太单一了，会有问题，先去掉
+  // let responseCode = getResponseIdentify(data)
+  // if (responseCode) {
+  //   removeResponsePending(responseCode, true)
+  // }
   return data
 }, error => {
   return Promise.reject(error)
 })
 
-export default { axios, clearRequest }
+export default { axios, clearRequest, setPendingInterceptors }

@@ -39,6 +39,8 @@ class LocalStorage {
    * @param value
    */
   public set (key: string, value: any, age: number = undefined) {
+    if (typeof localStorage == 'undefined') return
+
     localStorage.removeItem(key)
     let isObject = value instanceof Object && !(value instanceof Array)
     let _time = new Date().getTime()
@@ -68,6 +70,8 @@ class LocalStorage {
    * @returns {boolean}
    */
   public is_expire (key: string): boolean {
+    if (typeof localStorage == 'undefined') return
+
     let isExpire = true
     let value = localStorage.getItem(key)
     let now = new Date().getTime()
@@ -89,6 +93,8 @@ class LocalStorage {
    * @returns {*}
    */
   public get (key: string): any {
+    if (typeof localStorage == 'undefined') return
+
     let isExpire = this.is_expire(key)
     let value: any = null
     if (!isExpire) {
@@ -110,6 +116,8 @@ class LocalStorage {
    * @param key
    */
   public remove (key: string): void {
+    if (typeof localStorage == 'undefined') return
+
     localStorage.removeItem(key)
   }
 }

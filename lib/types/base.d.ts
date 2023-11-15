@@ -41,6 +41,7 @@ declare namespace AxiosCapsDeclare {
     path?: string
     type: string
     config?: any
+    repeat_request_interceptor?: RepeatInterceptor
   }
   export interface GlobalSetting {
     host: Host

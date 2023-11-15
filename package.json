@@ -1,6 +1,6 @@
 {
   "name": "axios-caps",
-  "version": "0.0.4",
+  "version": "0.0.4-beta.1",
   "license": "MIT",
   "description": "基于axios进行二次封装 接口库",
   "keywords": [
