@@ -22,19 +22,19 @@ export class AxiosCaps {
   }
   
   // 请求接口获取数据
-  public async fetch (key: string, params: AxiosCapsDeclare.CommonParams, header = {}) {
+  public async fetch (key: string, params: AxiosCapsDeclare.CommonParams, headers = {}) {
     const api_config = this.get_api(key)
     if (api_config) {
       api_config.host = this.get_host(api_config.host)
-      return await this.core.do(api_config, params, header)
+      return await this.core.do(api_config, params, headers)
     } else {
       return this.core.return_not_found_request()
     }
   }
 
   /* 传入自定义参数进行接口调用 */
-  public custom_fetch (options: AxiosCapsDeclare.ApiSetting, params: AxiosCapsDeclare.CommonParams, header = {}): AxiosCapsDeclare.Response | false {
-    return this.core.do(options, params, header)
+  public custom_fetch (options: AxiosCapsDeclare.ApiSetting, params: AxiosCapsDeclare.CommonParams, headers = {}): AxiosCapsDeclare.Response | false {
+    return this.core.do(options, params, headers)
   }
 
   // 或者key对应的api配置

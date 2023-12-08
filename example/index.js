@@ -1,4 +1,4 @@
-import { AxiosCaps } from '../dist'
+import { AxiosCaps } from '../dist/esm'
 import config from './request_setting'
 
 // // 通过YML文件读取api配置
@@ -24,7 +24,7 @@ const yaml_config = YAML.parse(buffer)
 
 const api_options = { type: 'object', config: yaml_config }
 const fetch2 = new AxiosCaps(config, api_options)
-const res2 = await fetch2.fetch('base.list', {})
+const res2 = await fetch2.fetch('base.list', { menu: 'test'})
 const res3 = await fetch2.fetch('none.none', {})
 const res4 = await fetch2.fetch('user.login', {})
 const res5 = await fetch2.fetch('base.list', {})

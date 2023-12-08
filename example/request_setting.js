@@ -8,7 +8,7 @@ export default {
     external: 'https://api.google.com/'
   },
   domain: '', // 缓存、cookie等挂靠的域名
-  header: {
+  headers: {
     version: '0.0.1',
     'Content-Type': 'application/json'
   }, // 全局header(一些特殊header，比如需要读localstorage中某个参数传后端，需要自己二次封装)

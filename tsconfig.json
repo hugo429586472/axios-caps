@@ -6,7 +6,7 @@
     "esModuleInterop": true,
     "removeComments": true, // 删除注释
     "resolveJsonModule": true, // 加载json
-    "outDir": "./dist", // 输出目录
+    "outDir": "./dist/esm", // 输出目录
     "target": "es2015", // 编译目标
     "module": "es2015", // 模块类型
     "moduleResolution": "node",

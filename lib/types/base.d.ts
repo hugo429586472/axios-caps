@@ -46,8 +46,8 @@ declare namespace AxiosCapsDeclare {
   export interface GlobalSetting {
     host: Host
     domain: string // 缓存、cookie等挂靠的域名
-    defaultHeader: ExtHeaders // 全局header(一些特殊header，比如需要读localstorage中某个参数传后端，需要自己二次封装)
-    defaultParams: Params // 全局默认params
+    headers: ExtHeaders // 全局header(一些特殊header，比如需要读localstorage中某个参数传后端，需要自己二次封装)
+    params: Params // 全局默认params
     timeout: number // 全局通用超时时间，默认3000
     requestConfig: AxiosRequestConfig // 请求配置
   }
@@ -59,7 +59,7 @@ declare namespace AxiosCapsDeclare {
     type: Method
     cookie: Cookie
     cache: Cache
-    header: ExtHeaders
+    headers: ExtHeaders
     repeat_request_interceptor: RepeatInterceptor
     repeat_reponse_interceptor: RepeatInterceptor
   }

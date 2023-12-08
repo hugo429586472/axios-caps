@@ -18,8 +18,8 @@ export class Core {
 
   host: AxiosCapsDeclare.GlobalSetting['host']
   domain: AxiosCapsDeclare.GlobalSetting['domain'] // 缓存、cookie等挂靠的域名
-  defaultHeader: AxiosCapsDeclare.GlobalSetting['defaultHeader'] // 全局header(一些特殊header，比如需要读localstorage中某个参数传后端，需要自己二次封装)
-  defaultParams: AxiosCapsDeclare.GlobalSetting['defaultParams'] // 全局默认params
+  headers: AxiosCapsDeclare.GlobalSetting['headers'] // 全局header(一些特殊header，比如需要读localstorage中某个参数传后端，需要自己二次封装)
+  params: AxiosCapsDeclare.GlobalSetting['params'] // 全局默认params
   timeout: AxiosCapsDeclare.GlobalSetting['timeout'] // 全局通用超时时间
   requestConfig: AxiosCapsDeclare.GlobalSetting['requestConfig'] // 请求配置
   cache: Cache
@@ -32,8 +32,8 @@ export class Core {
   public constructor (config: AxiosCapsDeclare.GlobalSetting) {
     this.host = config.host
     this.domain = config.domain
-    this.defaultHeader = config.defaultHeader
-    this.defaultParams = config.defaultParams
+    this.headers = config.headers
+    this.params = config.params
     this.timeout = config.timeout
     this.requestConfig = config.requestConfig
     this.cache = new Cache()
@@ -46,11 +46,11 @@ export class Core {
    *
    * @param {AxiosCapsDeclare.ApiSetting} apiOptions
    * @param {Params} params
-   * @param {*} [header={}]
+   * @param {*} [headers={}]
    * @returns
    * @memberof Core
    */
-  public async do (apiOptions: AxiosCapsDeclare.ApiSetting, params: Params, header = {}) {
+  public async do (apiOptions: AxiosCapsDeclare.ApiSetting, params: Params, headers = {}) {
     try {
       const cacheOptions = this.cahce_key(apiOptions, params)
       if (cacheOptions) {
@@ -58,12 +58,12 @@ export class Core {
         const cacheValue = this.cache.get_cache(cacheOptions.key)
         if (cacheValue) return cacheValue
 
-        const responseRes = await this.do_request(apiOptions, params, header)
+        const responseRes = await this.do_request(apiOptions, params, headers)
         // 设置缓存
         this.cache.create_cache(cacheOptions.key, responseRes, cacheOptions.timeout)
         return responseRes
       } else {
-        const responseRes = await this.do_request(apiOptions, params, header)
+        const responseRes = await this.do_request(apiOptions, params, headers)
         return responseRes
       }
     } catch (e) {
@@ -79,18 +79,18 @@ export class Core {
    *
    * @param {AxiosCapsDeclare.ApiSetting} apiOptions
    * @param {Params} params
-   * @param {{}} header
+   * @param {{}} headers
    * @returns
    * @memberof Core
    */
-  public get_request_body (apiOptions: AxiosCapsDeclare.ApiSetting, params: Params, header: {}) {
+  public get_request_body (apiOptions: AxiosCapsDeclare.ApiSetting, params: Params, headers: {}) {
     const path = this.get_static_path(apiOptions.path, params)
     if (!path) throw '未找到该接口配置'
     return {
       type: apiOptions.type,
       url: (apiOptions.host || '') + this.get_static_path(apiOptions.path, params),
       params: this.get_params(params),
-      headers: this.get_header(header),
+      headers: this.get_header(headers),
       repeat_request_interceptor: apiOptions.repeat_request_interceptor
     }
   }
@@ -98,15 +98,15 @@ export class Core {
   /**
    * 设置header
    *
-   * @param {Record<string, any>} [header={}]
+   * @param {Record<string, any>} [headers={}]
    * @returns {Record<string, any>}
    * @memberof Core
    */
-  public get_header (header: Record<string, any> = {}): Record<string, any> {
-    const deaultHeader = this.defaultHeader || {}
+  public get_header (headers: Record<string, any> = {}): Record<string, any> {
+    const defaultHeaders = this.headers || {}
     return {
-      ...deaultHeader,
-      ...header
+      ...defaultHeaders,
+      ...headers
     }
   }
 
@@ -118,7 +118,7 @@ export class Core {
    * @memberof Core
    */
   public get_params (params: Params = {}): Record<string, any> {
-    const defaultParams = this.defaultParams || {}
+    const defaultParams = this.params || {}
     return {
       ...defaultParams,
       ...params
@@ -194,12 +194,12 @@ export class Core {
    * @protected
    * @param {AxiosCapsDeclare.ApiSetting} apiOptions
    * @param {Params} params
-   * @param {*} [header={}]
+   * @param {*} [headers={}]
    * @returns
    * @memberof Core
    */
-  protected async do_request (apiOptions: AxiosCapsDeclare.ApiSetting, params: Params, header = {}) {
-    const request_body = this.get_request_body(apiOptions, params, header)
+  protected async do_request (apiOptions: AxiosCapsDeclare.ApiSetting, params: Params, headers = {}) {
+    const request_body = this.get_request_body(apiOptions, params, headers)
     const res = await request(request_body)
     const responseRes = this.get_response(res)
     return responseRes

@@ -78,6 +78,8 @@ export defineConfig({ mode }) => {
 
 ## 示例
 
+详细示例与参数说明可以到example目录中查看
+
 ### 注册实例
 
 ```js
@@ -92,7 +94,7 @@ const config = {
     external: 'https://api.google.com/'
   },
   domain: '', // 缓存、cookie等挂靠的域名
-  header: {
+  headers: {
     version: '0.0.1',
     'Content-Type': 'application/json'
   }, // 全局header(一些特殊header，比如需要读localstorage中某个参数传后端，需要自己二次封装)
@@ -127,7 +129,7 @@ export default defineComponent({
         username: 'admin',
         password: 'admin'
       }, // params
-      { token: 'admin' } // header
+      { token: 'admin' } // headers
     ).then((response) => {
       if (response.code >= 10000) {
         console.log('success response')
@@ -170,7 +172,7 @@ user:
 请求参数，get请求中会写到url中
 
 **headers**
-请求头，会与全局配置中defaultHeader进行合并
+请求头，会与全局配置中headers进行合并
 
 ### instance.get_api(key)
 

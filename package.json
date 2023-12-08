@@ -1,6 +1,6 @@
 {
   "name": "axios-caps",
-  "version": "0.0.4-beta.1",
+  "version": "0.0.4-beta.2",
   "license": "MIT",
   "description": "基于axios进行二次封装 接口库",
   "keywords": [
@@ -8,15 +8,10 @@
   ],
   "private": false,
   "type": "module",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/index.js",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.js"
-    }
-  },
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "browser": "dist/cjs/index.js",
+  "types": "dist/types/index.d.ts",
   "files": [
     "dist",
     "lib",
