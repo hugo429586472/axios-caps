@@ -1,11 +1,15 @@
 {
   "name": "axios-caps",
-  "version": "0.0.4-beta.2",
+  "version": "0.0.5",
   "license": "MIT",
   "description": "基于axios进行二次封装 接口库",
   "keywords": [
     "axios"
   ],
+  "repository": {
+		"type": "git",
+		"url": "https://github.com/hugo429586472/axios-caps"
+	},
   "private": false,
   "type": "module",
   "main": "dist/cjs/index.js",
